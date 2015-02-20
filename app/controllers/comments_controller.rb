@@ -1,5 +1,6 @@
 class CommentsController < ApplicationController
   COMMENTS_PER_PAGE = 20
+  MAX_COMMENT_LENGTH = 2048
 
   before_filter :require_logged_in_user_or_400,
     :only => [ :upvote, :downvote, :unvote ]
@@ -8,6 +9,10 @@ class CommentsController < ApplicationController
   before_filter :find_user_from_rss_token, :only => [ :index ]
 
   def create
+    if (request.headers["CONTENT_LENGTH"].to_i > MAX_COMMENT_LENGTH * 2)
+      return render :text => "request too large", status => 413
+    end
+
     if !(story = Story.where(:short_id => params[:story_id]).first) ||
     story.is_gone?
       return render :text => "can't find story", :status => 400
@@ -15,6 +20,10 @@ class CommentsController < ApplicationController
 
     comment = story.comments.build
     comment.comment = params[:comment].to_s
+
+    if comment.comment.length > MAX_COMMENT_LENGTH
+      return render :text => "comment too long", status => 413
+    end
 
     if @user.nil?
       comment.user = User.where(:username => "Anonymous").first

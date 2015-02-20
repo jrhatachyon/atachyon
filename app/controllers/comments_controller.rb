@@ -2,7 +2,7 @@ class CommentsController < ApplicationController
   COMMENTS_PER_PAGE = 20
 
   before_filter :require_logged_in_user_or_400,
-    :only => [ :create, :preview, :upvote, :downvote, :unvote ]
+    :only => [ :upvote, :downvote, :unvote ]
 
   # for rss feeds, load the user's tag filters if a token is passed
   before_filter :find_user_from_rss_token, :only => [ :index ]
@@ -15,7 +15,12 @@ class CommentsController < ApplicationController
 
     comment = story.comments.build
     comment.comment = params[:comment].to_s
-    comment.user = @user
+
+    if @user.nil?
+      comment.user = User.where(:username => "Anonymous").first
+    else
+      comment.user = @user
+    end
 
     if params[:hat_id] && @user.hats.where(:id => params[:hat_id])
       comment.hat_id = params[:hat_id]
@@ -33,7 +38,7 @@ class CommentsController < ApplicationController
 
     # prevent double-clicks of the post button
     if params[:preview].blank? &&
-    (pc = Comment.where(:story_id => story.id, :user_id => @user.id,
+    (pc = Comment.where(:story_id => story.id, :user_id => comment.user.id,
       :parent_comment_id => comment.parent_comment_id).first)
       if (Time.now - pc.created_at) < 5.minutes
         comment.errors.add(:comment, "^You have already posted a comment " <<

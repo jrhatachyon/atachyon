@@ -15,29 +15,24 @@ data-shortid="<%= comment.short_id if comment.persisted? %>">
 
   <div style="width: 100%;">
     <%= text_area_tag "comment", comment.comment, :rows => 5,
-      :style => "width: 100%;", :autocomplete => "off", :disabled => !@user,
-      :placeholder => (@user ? "" : "You must be logged in to leave a comment.")
-      %>
+      :style => "width: 100%;", :autocomplete => "off"%>
 
     <p></p>
 
     <div class="markdown_help_toggler">
-      <% if @user %>
-        <div class="markdown_help_label">
-          Markdown formatting available
-        </div>
-        <div class="markdown_help_label markdown_help_label_mobile"
-        style="display: none;">
-          [M&darr;]
-        </div>
-      <% end %>
+      <div class="markdown_help_label">
+        Markdown formatting available
+      </div>
+      <div class="markdown_help_label markdown_help_label_mobile"
+           style="display: none;">
+        [M&darr;]
+      </div>
 
       <%= button_tag "#{comment.new_record?? "Post" : "Update"}",
-        :class => "comment-post", :type => "button",
-        :disabled => !@user %>
+        :class => "comment-post", :type => "button" %>
       &nbsp;
       <%= button_tag "Preview", :class => "comment-preview",
-        :type => "button", :disabled => !@user %>
+        :type => "button" %>
       <% if comment.persisted? || comment.parent_comment_id %>
         &nbsp;
         <%= button_tag "Cancel", :class => "comment-cancel",
@@ -54,10 +49,7 @@ data-shortid="<%= comment.short_id if comment.persisted? %>">
       <% end %>
 
       <div style="clear: both;"></div>
-
-      <% if @user %>
-        <%= render :partial => "global/markdownhelp" %>
-      <% end %>
+      <%= render :partial => "global/markdownhelp" %>
     </div>
   </div>
 

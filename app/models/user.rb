@@ -215,6 +215,23 @@ class User < ActiveRecord::Base
     Time.now - self.created_at <= NEW_USER_DAYS.days
   end
 
+  def level
+    case
+    when 0 > self.karma
+      return -1
+    when 0 === self.karma
+      return 0
+    when (1..9) === self.karma
+      return 1
+    when (10..49) === self.karma
+      return 2
+    when 49 < self.karma
+      return 3
+    else
+      return 42
+    end
+  end
+
   def linkified_about
     # most users are probably mentioning "@username" to mean a twitter url, not
     # a link to a profile on this site

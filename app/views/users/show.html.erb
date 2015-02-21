@@ -78,11 +78,9 @@
     <br>
   <% end %>
 
-  <label class="required">Karma:</label>
+  <label class="required">Karma Level:</label>
   <span class="d">
-    <%= @showing_user.karma %>, averaging <%=
-      number_with_precision(@showing_user.average_karma, :precision => 2) %>
-      per story/comment
+    level <%= @showing_user.level %>
   </span>
   <br>
 

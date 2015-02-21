@@ -1,9 +1,8 @@
 class StoriesController < ApplicationController
   before_filter :require_logged_in_user_or_400,
-    :only => [ :upvote, :downvote, :unvote, :hide, :unhide, :preview ]
+    :only => [ :upvote, :downvote, :unvote, :hide, :unhide ]
 
-  before_filter :require_logged_in_user, :only => [ :destroy, :create, :edit,
-    :fetch_url_title, :new ]
+  before_filter :require_logged_in_user, :only => [ :destroy, :edit ]
 
   before_filter :find_user_story, :only => [ :destroy, :edit, :undelete,
     :update ]
@@ -13,7 +12,7 @@ class StoriesController < ApplicationController
     @cur_url = "/stories/new"
 
     @story = Story.new(story_params)
-    @story.user_id = @user.id
+    @story.user_id = user.id
 
     if @story.valid? && !(@story.already_posted_story && !@story.seen_previous)
       if @story.save
@@ -100,7 +99,7 @@ class StoriesController < ApplicationController
 
   def preview
     @story = Story.new(story_params)
-    @story.user_id = @user.id
+    @story.user_id = user.id
     @story.previewing = true
 
     @story.vote = Vote.new(:vote => 1)
@@ -191,6 +190,14 @@ class StoriesController < ApplicationController
     end
   end
 
+  def user
+    if @user.nil?
+      return User.where(:username => "Anonymous").first
+    else
+      return @user 
+    end
+  end
+
   def unvote
     if !(story = find_story)
       return render :text => "can't find story", :status => 400
@@ -260,7 +267,7 @@ private
       :merge_story_short_id, :is_unavailable, :tags_a => [],
     )
 
-    if @user.is_moderator?
+    if @user && @user.is_moderator?
       p
     else
       p.except(:moderation_reason, :merge_story_short_id, :is_unavailable)

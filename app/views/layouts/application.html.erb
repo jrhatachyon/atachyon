@@ -41,12 +41,12 @@
         <% links = {
           "/" => @cur_url == "/" ? Rails.application.name : "Home",
           "/recent" => "Recent",
-          "/comments" => "Comments"
+          "/comments" => "Comments",
+          "/stories/new" => "Submit Story"
         } %>
 
         <% if @user %>
-          <% links.merge!({ "/threads" => "Your Threads",
-            "/stories/new" => "Submit Story" }) %>
+          <% links.merge!({ "/threads" => "Your Threads" }) %>
         <% end %>
 
         <% links.merge!({ "/search" => "Search" }) %>

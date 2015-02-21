@@ -72,6 +72,12 @@ class="comment <%= comment.current_vote ? (comment.current_vote[:vote] == 1 ?
           <a class="comment_deletor">delete</a>
         <% end %>
 
+	<% if @user && comment.user.is_bannable_by_user?(@user) &&
+	   comment.user.is_active? %>
+            |
+            <a class="comment_banhammer">ban</a>
+        <% end %>
+  
         <% if !comment.story.is_gone? && !comment.is_gone? %>
             |
             <a class="comment_replier">reply</a>

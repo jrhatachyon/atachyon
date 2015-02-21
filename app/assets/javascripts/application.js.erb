@@ -352,6 +352,14 @@ $(document).ready(function() {
     }
   });
 
+  $(document).on("click", "a.comment_banhammer", function() {
+    if (confirm("Are you sure you want to ban this user? THIS IS A BIG DEAL!")) {
+      var li = $(this).closest(".comment");
+      $.post("/comments/" + $(li).attr("data-shortid") + "/ban");
+      window.location.reload();
+    }
+  });
+
   $("#story_tags_a").select2({
     formatSelection: function(what) {
       return what.id;
@@ -413,5 +421,10 @@ $(document).ready(function() {
   $(document).on("click", "#story_guidelines_toggler", function() {
     $("#story_guidelines").toggle();
     return false;
+  });
+
+  $(document).on("click", "button.user-unban", function() {
+    $.post(window.location.pathname + "/unban");
+    window.location.reload();
   });
 });

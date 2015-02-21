@@ -69,6 +69,7 @@ Lobsters::Application.routes.draw do
 
         post "delete"
         post "undelete"
+        post "ban"
       end
     end
     get "/comments/page/:page" => "comments#index"
@@ -85,6 +86,8 @@ Lobsters::Application.routes.draw do
 
     get "/u" => "users#tree"
     get "/u/:username" => "users#show", :as => "user"
+    post "/u/:username/unban" => "users#unban", :as => "unban_user"
+    post "/u/:username/ban" => "users#ban", :as => "ban_user"
 
     get "/settings" => "settings#index"
     post "/settings" => "settings#update"

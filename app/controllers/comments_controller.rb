@@ -124,6 +124,19 @@ class CommentsController < ApplicationController
       :content_type => "text/html", :locals => { :comment => comment }
   end
 
+  def ban
+    if !(comment = find_comment)
+      return render :text => "can't find comment", :status => 400
+    elsif !comment.user.is_bannable_by_user?(@user)
+      return render :text => "insufficient authority to ban user",
+        :status => 403
+    end
+
+    comment.user.ban_by_user_for_reason!(@user,
+                                        "#{comment.url}#c_#{comment.short_id}")
+    head :ok
+  end
+
   def update
     if !((comment = find_comment) && comment.is_editable_by_user?(@user))
       return render :text => "can't find comment", :status => 400

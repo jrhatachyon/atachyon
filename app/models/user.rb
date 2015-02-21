@@ -193,6 +193,20 @@ class User < ActiveRecord::Base
     !(deleted_at? || is_banned?)
   end
 
+  def is_bannable_by_user?(user)
+    # only permit banning if banner is admin,
+    # or banner is mod and banned is neither
+    if user && user.is_admin?
+      return true
+    elsif self.is_admin? || self.is_moderator?
+      return false
+    elsif user && user.is_moderator?
+      return true
+    else
+      return false
+    end
+  end
+
   def is_banned?
     banned_at?
   end
@@ -242,6 +256,7 @@ class User < ActiveRecord::Base
     self.banned_at = nil
     self.banned_by_user_id = nil
     self.banned_reason = nil
+    self.deleted_at = nil
     self.save!
   end
 

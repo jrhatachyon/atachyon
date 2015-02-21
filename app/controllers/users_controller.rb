@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+  before_filter :require_logged_in_user_or_400,
+    :only => [:ban, :unban]
+
   def show
     @showing_user = User.where(:username => params[:username]).first!
     @title = "User #{@showing_user.username}"
@@ -22,5 +25,31 @@ class UsersController < ApplicationController
 
   def invite
     @title = "Pass Along an Invitation"
+  end
+
+  def ban
+    @showing_user = User.where(:username => params[:username]).first!
+    if @showing_user.is_banned?
+      return render :text => "user already banned", :status => 400
+    elsif !@showing_user.is_bannable_by_user?(@user)
+      return render :text => "insufficient authority to ban user",
+        :status => 403
+    end
+
+    @showing_user.ban_by_user_for_reason!(@user, params[:banned_reason])
+    redirect_to @showing_user
+  end
+
+  def unban
+    @showing_user = User.where(:username => params[:username]).first!
+    if !(@showing_user.is_banned?)
+      return render :text => "user isn't banned", :status => 400
+    elsif !@showing_user.is_bannable_by_user?(@user)
+      return render :text => "insufficient authority to unban user",
+        :status => 403
+    end
+
+    @showing_user.unban!
+    head :ok
   end
 end

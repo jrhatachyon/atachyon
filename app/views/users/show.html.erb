@@ -118,7 +118,7 @@
     </div>
   <% end %>
 
-  <% if @user && @user.is_admin? && !@showing_user.is_moderator? %>
+  <% if @user && @showing_user.is_bannable_by_user?(@user) %>
     <div style="clear: both;"></div>
     <br>
 
@@ -128,6 +128,16 @@
     </div>
     </p>
 
+    <label class="required">Moderator Actions:</label>
+    <% if @showing_user.is_banned? %>
+      <%= button_tag "Unban", :class => "user-unban", :type => "button" %>
+    <% else %>
+      <%= form_tag @showing_user.username + "/ban", :method => :post do %>
+        <%= submit_tag "Ban User" %>
+        <%= text_field_tag :banned_reason, "ban reason", :class => "required" %>
+      <% end %>
+    <% end %>
+    <br>
     <label class="required">E-Mail:</label>
     <span class="d">
       <%= @showing_user.email %>

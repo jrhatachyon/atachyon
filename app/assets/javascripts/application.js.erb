@@ -291,11 +291,6 @@ $(document).ready(function() {
   }),
 
   $(document).on("click", "a.comment_replier", function() {
-    if (!Lobsters.curUser) {
-      Lobsters.bounceToLogin();
-      return false;
-    }
-
     var comment = $(this).closest(".comment");
     if ($("#reply_form_" + comment.attr("id")).length > 0)
       return false;

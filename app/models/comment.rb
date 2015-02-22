@@ -118,6 +118,7 @@ class Comment < ActiveRecord::Base
       :updated_at,
       :is_deleted,
       :is_moderated,
+      :anon,
     ])
     h[:score] = score
 
@@ -371,6 +372,10 @@ class Comment < ActiveRecord::Base
 
   def url
     self.story.comments_url + "/comments/#{self.short_id}#c_#{self.short_id}"
+  end
+
+  def username
+    return self.anon ? "Anonymous" : self.user.username
   end
 
   def vote_summary

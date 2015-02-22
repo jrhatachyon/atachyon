@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150211170052) do
+ActiveRecord::Schema.define(version: 20150222033623) do
 
   create_table "comments", force: true do |t|
     t.datetime "created_at",                                                                    null: false
@@ -30,8 +30,10 @@ ActiveRecord::Schema.define(version: 20150211170052) do
     t.boolean  "is_moderated",                                                  default: false
     t.boolean  "is_from_email",                                                 default: false
     t.integer  "hat_id"
+    t.boolean  "anon",                                                          default: false
   end
 
+  add_index "comments", ["anon"], name: "index_comments_on_anon", using: :btree
   add_index "comments", ["confidence"], name: "confidence_idx", using: :btree
   add_index "comments", ["short_id"], name: "short_id", unique: true, using: :btree
   add_index "comments", ["story_id", "short_id"], name: "story_id_short_id", using: :btree

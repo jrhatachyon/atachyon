@@ -257,8 +257,8 @@ class User < ActiveRecord::Base
   end
 
   def recent_threads(amount)
-    self.comments.group(:thread_id).order('MAX(created_at) DESC').limit(
-      amount).pluck(:thread_id)
+    self.comments.where(:anon => false).group(:thread_id).order(
+      'MAX(created_at) DESC').limit(amount).pluck(:thread_id)
   end
 
   def stories_submitted_count

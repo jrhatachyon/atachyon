@@ -31,6 +31,8 @@ class CommentsController < ApplicationController
       comment.user = @user
     end
 
+    comment.anon = params[:anon].eql? "signed-anon"
+
     if params[:hat_id] && @user.hats.where(:id => params[:hat_id])
       comment.hat_id = params[:hat_id]
     end

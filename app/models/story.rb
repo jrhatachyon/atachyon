@@ -117,6 +117,7 @@ class Story < ActiveRecord::Base
       :created_at,
       :title,
       :url,
+      :anon,
     ])
     h[:score] = score
     h[:comment_count] = comments_count
@@ -552,6 +553,10 @@ class Story < ActiveRecord::Base
 
   def url_or_comments_url
     self.url.blank? ? self.comments_url : self.url
+  end
+
+  def username
+    return self.anon ? "Anonymous" : self.user.username
   end
 
   def vote_summary_for(user)

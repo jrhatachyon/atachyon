@@ -119,6 +119,17 @@
 
       </ul>
     </div>
+      <% if @user %>
+        <br>
+        Sign post as:
+        <br>
+        <%= radio_button_tag(:anon, "signed-anon", :checked => 'checked') %>
+        <%= label_tag(:anon_full, "\"Anonymous\"") %>
+        <br>
+        <%= radio_button_tag(:anon, "signed-in") %>
+        <%= label_tag(:anon_not, "\"" + @user.username + "\"") %>
+        <p></p>
+      <% end %>
   </div>
 </div>
 

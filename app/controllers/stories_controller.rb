@@ -14,6 +14,8 @@ class StoriesController < ApplicationController
     @story = Story.new(story_params)
     @story.user_id = user.id
 
+    @story.anon = params[:anon].eql? "signed-anon"
+
     if @story.valid? && !(@story.already_posted_story && !@story.seen_previous)
       if @story.save
         Countinual.count!("#{Rails.application.shortname}.stories.submitted",

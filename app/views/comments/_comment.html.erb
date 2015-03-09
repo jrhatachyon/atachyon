@@ -7,21 +7,25 @@ class="comment <%= comment.current_vote ? (comment.current_vote[:vote] == 1 ?
   <%= comment.score <= -1 ? "negative_1" : "" %>
   <%= comment.score <= -3 ? "negative_3" : "" %>
   <%= comment.score <= -5 ? "negative_5" : "" %>">
+  <div class="voters">
   <% if !comment.is_gone? %>
-    <div class="voters">
-      <% if @user %>
-        <a class="upvoter"></a>
-      <% else %>
-        <%= link_to "", login_path, :class => "upvoter" %>
-      <% end %>
-      <div class="score"><%= comment.score %></div>
-      <% if @user && @user.can_downvote?(comment) %>
-        <a class="downvoter"></a>
-      <% else %>
-        <span class="downvoter downvoter_stub"></span>
-      <% end %>
-    </div>
+    <% if @user %>
+      <a class="upvoter"></a>
+    <% else %>
+      <%= link_to "", login_path, :class => "upvoter" %>
+    <% end %>
+    <div class="score"><%= comment.score %></div>
+    <% if @user && @user.can_downvote?(comment) %>
+      <a class="downvoter"></a>
+    <% else %>
+      <span class="downvoter downvoter_stub"></span>
+    <% end %>
+  <% else %>
+    <span class="downvoter downvoter_stub"></span>
+    <div class="score">&Oslash;</div>
+    <span class="downvoter downvoter_stub"></span>
   <% end %>
+  </div>
   <div class="details">
     <div class="byline">
       <a name="c_<%= comment.short_id %>"></a>
@@ -57,7 +61,7 @@ class="comment <%= comment.current_vote ? (comment.current_vote[:vote] == 1 ?
 
       <% if !comment.previewing %>
         |
-        <a href="<%= comment.url %>">link</a>
+        <a href="<%= comment.url %>">comment <%= comment.id %></a>
 
         <% if comment.is_editable_by_user?(@user) %>
           |
@@ -109,6 +113,10 @@ class="comment <%= comment.current_vote ? (comment.current_vote[:vote] == 1 ?
         </span>
         </p>
       <% else %>
+        <% if comment.parent_comment && @user && @user.flat_comments %>
+          <a href="#c_<%= comment.parent_comment.short_id %>">
+	    >><%= comment.parent_comment.id %></a>
+	<% end %>
         <%= raw comment.markeddown_comment %>
       <% end %>
     </div>

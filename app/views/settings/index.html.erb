@@ -63,6 +63,21 @@
     <br>
 
     <div class="legend">
+      Comment Layout Settings
+    </div>
+
+    <div class="boxline">
+      <%= f.radio_button :flat_comments, false %>
+      <%= f.label :flat_comments, "Threaded Comments", :value => false,
+      :checked => true %>
+      <br>
+      <%= f.radio_button :flat_comments, true %>
+      <%= f.label :flat_comments, "Flat Comments", :value => true %>
+    </div>
+
+    <br>
+
+    <div class="legend">
       Notification Settings
     </div>
 

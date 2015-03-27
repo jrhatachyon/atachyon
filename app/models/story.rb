@@ -143,6 +143,12 @@ class Story < ActiveRecord::Base
     self.upvotes = 1
   end
 
+  def avatar_url(size = 100)
+    return self.anon ? "https://secure.gravatar.com/avatar/" +
+      "c1e27f572e30185d475a0b355166b098?r=pg&d=mm&s=#{size}"
+      : self.user.avatar_url(size)
+  end
+
   def calculated_hotness
     base = 0
     self.tags.select{|t| t.hotness_mod != 0 }.each do |t|
@@ -189,7 +195,7 @@ class Story < ActiveRecord::Base
       if !t.tag.valid_for?(u)
         raise "#{u.username} does not have permission to use privileged " <<
           "tag #{t.tag.tag}"
-      elsif t.tag.inactive? && !t.new_record?
+      elsif t.tag.inactive? && !t.new_record? && !t.marked_for_destruction?
         # stories can have inactive tags as long as they existed before
         raise "#{u.username} cannot add inactive tag #{t.tag.tag}"
       end

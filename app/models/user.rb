@@ -54,7 +54,7 @@ class User < ActiveRecord::Base
 
   BANNED_USERNAMES = [ "admin", "administrator", "hostmaster", "mailer-daemon",
     "postmaster", "root", "security", "support", "webmaster", "moderator",
-    "moderators", ]
+    "moderators", "help", "contact", "fraud", ]
 
   # days old accounts are considered new for
   NEW_USER_DAYS = 7
@@ -83,9 +83,9 @@ class User < ActiveRecord::Base
     h
   end
 
-  def avatar_url
+  def avatar_url(size = 100)
     "https://secure.gravatar.com/avatar/" +
-      Digest::MD5.hexdigest(self.email.strip.downcase) + "?r=pg&d=mm&s=100"
+      Digest::MD5.hexdigest(self.email.strip.downcase) + "?r=pg&d=mm&s=#{size}"
   end
 
   def average_karma

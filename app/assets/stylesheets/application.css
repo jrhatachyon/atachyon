@@ -237,8 +237,8 @@ div#wrapper {
 	margin-left: auto;
 	margin-right: auto;
 	padding-bottom: 2em;
-	min-width: 800px;
-	max-width: 1000px;
+	min-width: 600px;
+	max-width: 900px;
 }
 div#inside {
 	margin-left: 0.25em;
@@ -250,7 +250,7 @@ div#inside {
 
 #header {
 	font-weight: bold;
-	padding: 5px 42px 5px 10px;
+	padding: 5px 10px;
 	margin-top: 1em;
 	margin-bottom: 0.5em;
 	line-height: 18px;
@@ -327,7 +327,7 @@ div#footer {
 	float: right;
 	font-weight: bold;
 	margin-top: 1.5em;
-	padding-right: 42px;
+	padding-right: 10px;
 }
 div#footer a {
 	color: #999;
@@ -369,7 +369,7 @@ ol.comments {
 }
 ol.comments1 {
 	margin-left: 0;
-	padding-left: 25px;
+	padding-left: 0;
 }
 ol.comments.comments1 {
 	border-left-color: transparent;
@@ -529,6 +529,17 @@ li .domain {
 li .byline {
 	color: #888;
 	font-size: 8.5pt;
+}
+li .byline > img.avatar {
+	margin-bottom: -5px;
+}
+li .byline img.avatar {
+	border-radius: 8px;
+	height: 16px;
+	margin-bottom: 2px;
+	margin-right: 2px;
+	vertical-align: middle;
+	width: 16px;
 }
 li.story .byline {
 	margin-top: 1px;
@@ -773,7 +784,7 @@ div#story_box div.markdown_help_toggler {
 }
 
 div.comment_form_container form {
-	margin-left: 15px;
+	margin-left: 40px;
 	max-width: 700px;
 }
 

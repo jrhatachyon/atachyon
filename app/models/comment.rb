@@ -151,6 +151,12 @@ class Comment < ActiveRecord::Base
     end
   end
 
+  def avatar_url(size = 100)
+    return self.anon ? "https://secure.gravatar.com/avatar/" + 
+      "c1e27f572e30185d475a0b355166b098?r=pg&d=mm&s=#{size}"
+      : self.user.avatar_url(size)
+  end
+
   # http://evanmiller.org/how-not-to-sort-by-average-rating.html
   # https://github.com/reddit/reddit/blob/master/r2/r2/lib/db/_sorts.pyx
   def calculated_confidence
